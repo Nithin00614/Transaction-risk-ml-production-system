@@ -1,23 +1,24 @@
 
+---
+
 # Transaction Risk ML – Real-Time Risk Scoring System
 
 ## Overview
 
-This project implements a **real-time transaction risk scoring ML system** designed to demonstrate practical **ML system design principles**, including offline training, online inference, model versioning, monitoring, and deployment readiness.
+This project implements a **real-time transaction risk scoring ML system** demonstrating production-style ML architecture: offline training, model versioning, and containerized online inference.
 
-The system predicts the **fraud / risk probability of financial transactions** using structured transaction features and exposes a **FastAPI inference endpoint** for real-time scoring.
+The system predicts the **fraud/risk probability of financial transactions** and exposes a **FastAPI inference endpoint** for real-time scoring.
 
 ---
 
 ## Key Features
 
 * End-to-end ML pipeline (data → training → inference)
-* Logistic Regression baseline risk scoring model
-* Offline training and experiment tracking with **MLflow**
-* Real-time inference using **FastAPI**
-* Containerized deployment using **Docker**
-* Monitoring-ready logging architecture
-* Clear **system design documentation** (`system_design.md`)
+* Logistic Regression baseline scoring model
+* Experiment tracking using **MLflow**
+* Real-time inference via **FastAPI**
+* **Dockerized** deployment
+* System design documentation (`system_design.md`)
 
 ---
 
@@ -26,32 +27,15 @@ The system predicts the **fraud / risk probability of financial transactions** u
 ```
 transaction-risk-ml/
 │
-├── data/                  # Sample dataset
-├── src/
-│   ├── train.py           # Training pipeline
-│   ├── inference.py       # Inference logic
-│   ├── app.py             # FastAPI service
-│
-├── models/                # Saved model artifacts
-├── system_design.md       # System architecture & decisions
+├── data/
+├── training/            # Training pipeline
+├── inference/           # API & inference logic
+├── models/              # Model artifacts
+├── system_design.md     # Architecture documentation
 ├── requirements.txt
 ├── Dockerfile
 └── README.md
 ```
-
----
-
-## ML System Architecture
-
-The system follows a **production-style ML architecture**:
-
-* **Offline layer:** model training, validation, experiment tracking
-* **Online layer:** stateless inference API for real-time predictions
-* **Monitoring layer:** logging hooks for operational and prediction monitoring
-* **Deployment layer:** Dockerized container ready for EC2 / cloud deployment
-
-Detailed architecture and trade-off decisions are documented in
-`system_design.md`.
 
 ---
 
@@ -66,16 +50,16 @@ pip install -r requirements.txt
 ### Train model
 
 ```bash
-python src/train.py
+python training/train.py
 ```
 
 ### Run inference API
 
 ```bash
-uvicorn src.app:app --reload
+uvicorn inference.app:app --reload
 ```
 
-API will be available at:
+API:
 
 ```
 http://127.0.0.1:8000/docs
@@ -85,8 +69,6 @@ http://127.0.0.1:8000/docs
 
 ## Deployment
 
-The application is containerized using Docker and can be deployed locally or on cloud infrastructure (e.g., AWS EC2).
-
 ```bash
 docker build -t <username>/transaction-risk-ml .
 docker run -p 8000:8000 <username>/transaction-risk-ml
@@ -94,22 +76,10 @@ docker run -p 8000:8000 <username>/transaction-risk-ml
 
 ---
 
-## Purpose of the Project
-
-This project is designed to:
-
-* Demonstrate **practical ML system design thinking**
-* Showcase **real-time ML inference architecture**
-* Provide a **portfolio-ready example** of deployable ML systems
-
----
-
 ## Documentation
 
-For full architecture details, design decisions, trade-offs, and failure-handling strategies, see:
+Detailed system architecture, design decisions, and trade-offs are available in:
 
-**`system_design.md`**
+**system_design.md**
 
 ---
-
-
