@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pydantic
+numpy>=2.0.0
+pandas>=2.0.0
+scikit-learn>=1.8.0
+mlflow
+joblib
+streamlit
+requests
