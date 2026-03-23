@@ -79,5 +79,12 @@ htmlcov/
 node_modules/
 npm-debug.log
 
-# Docker (local builds, don't push)
+# Docker (local builds)
 .dockerignore.local
+Dockerfile.local
+Dockerfile.streamlit
+
+docker-compose.local.yml
+docker-compose.streamlit.yml
+docker-compose.prod.yml
+docker-compose.yml
