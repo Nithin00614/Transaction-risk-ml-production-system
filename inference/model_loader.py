@@ -1,6 +1,6 @@
 import joblib
 
-MODEL_PATH = "models/model.pkl"
+MODEL_PATH = "models/logreg_v1.pkl"
 
 model = None
 

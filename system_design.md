@@ -74,8 +74,20 @@ Training and inference code paths are strictly separated to avoid
 training-serving skew and accidental coupling.
 
 ---
+## 8. Decision Logic
 
-## 8. API Design
+The model outputs a probability score using Logistic Regression.
+
+Based on this score, business decisions are applied:
+
+- **risk_score < 0.3 → allow**
+- **0.3 ≤ risk_score < 0.7 → challenge**
+- **risk_score ≥ 0.7 → block**
+
+This threshold-based decisioning simulates real-world fraud detection systems where model outputs are mapped to actionable outcomes.
+---
+
+## 9. API Design
 POST /score
 
 Request:
@@ -89,7 +101,7 @@ Response:
 
 ---
 
-## 9. Scalability (Conceptual)
+## 10. Scalability (Conceptual)
 - Stateless service enables horizontal scaling
 - Load balancer distributes traffic
 - Each instance loads model once at startup
@@ -97,7 +109,7 @@ Response:
 
 ---
 
-## 10. Latency Considerations
+## 11. Latency Considerations
 - Simple model choice
 - No database calls in inference path
 - Minimal feature transformations
@@ -105,28 +117,28 @@ Response:
 
 ---
 
-## 11. Failure Handling
+## 12. Failure Handling
 - Invalid input rejected at schema validation
 - Model load failure prevents service startup
 - Timeouts handled at API gateway layer
 
 ---
 
-## 12. Trade-offs
+## 13. Trade-offs
 - Simpler model chosen over deep learning for reliability
 - No real-time feature store to reduce latency
 - Accuracy traded for predictability
 
 ---
 
-## 13. Limitations
+## 14. Limitations
 - No concept drift detection
 - No online learning
 - No streaming ingestion
 
 ---
 
-## 14. Future Improvements
+## 15. Future Improvements
 - Add feature store
 - Introduce canary model deployment
 - Monitor prediction distributions

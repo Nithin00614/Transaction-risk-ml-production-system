@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 import numpy as np
+import pandas as pd
 from datetime import datetime
 
 from inference.schemas import TransactionRequest, RiskResponse
@@ -49,16 +50,17 @@ def get_metadata():
 @app.post("/score", response_model=RiskResponse)
 def score_transaction(req: TransactionRequest):
     """Score a transaction for fraud risk"""
-    features = np.array([[
-        req.amount,
-        req.account_age_days,
-        req.past_txn_count_24h,
-        req.hour_of_day,
-        req.merchant_risk_score
-    ]])
+    features = pd.DataFrame([{
+    "amount": req.amount,
+    "account_age_days": req.account_age_days,
+    "past_txn_count_24h": req.past_txn_count_24h,
+    "hour_of_day": req.hour_of_day,
+    "merchant_risk_score": req.merchant_risk_score
+    }])
 
     risk_score = model.predict_proba(features)[0][1]
 
+    # Convert probability to business decision using thresholds
     if risk_score < 0.3:
         decision = "allow"
     elif risk_score < 0.7:
@@ -67,7 +69,7 @@ def score_transaction(req: TransactionRequest):
         decision = "block"
 
     return RiskResponse(
-        risk_score=risk_score,
+        risk_score=float(risk_score),
         decision=decision,
         model_version="logreg_v1"
     )
