@@ -2,9 +2,10 @@ from fastapi import FastAPI
 import numpy as np
 import pandas as pd
 from datetime import datetime
+import warnings
 
 from inference.schemas import TransactionRequest, RiskResponse
-from inference.model_loader import load_model
+from inference.model_loader import load_model, FEATURE_NAMES
 
 app = FastAPI(
     title="Transaction Risk Assessment API",
@@ -50,15 +51,22 @@ def get_metadata():
 @app.post("/score", response_model=RiskResponse)
 def score_transaction(req: TransactionRequest):
     """Score a transaction for fraud risk"""
+    # Create DataFrame with proper feature names and order
     features = pd.DataFrame([{
-    "amount": req.amount,
-    "account_age_days": req.account_age_days,
-    "past_txn_count_24h": req.past_txn_count_24h,
-    "hour_of_day": req.hour_of_day,
-    "merchant_risk_score": req.merchant_risk_score
+        "amount": req.amount,
+        "account_age_days": req.account_age_days,
+        "past_txn_count_24h": req.past_txn_count_24h,
+        "hour_of_day": req.hour_of_day,
+        "merchant_risk_score": req.merchant_risk_score
     }])
-
-    risk_score = model.predict_proba(features)[0][1]
+    
+    # Ensure column order matches training
+    features = features[FEATURE_NAMES]
+    
+    # Suppress feature name warnings during prediction
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=UserWarning)
+        risk_score = model.predict_proba(features)[0][1]
 
     # Convert probability to business decision using thresholds
     if risk_score < 0.3:

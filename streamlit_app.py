@@ -1,14 +1,18 @@
 import streamlit as st
 import requests
 import json
+import os
 
 st.set_page_config(page_title="Transaction Risk Assessment", layout="wide")
 
 st.title(" Transaction Risk Assessment")
 st.markdown("Evaluate transaction risk in real-time using machine learning")
 
-# API endpoint configuration
-API_URL = "http://localhost:8000/score"
+# API endpoint configuration - supports both local and Docker environments
+# In Docker compose, use "api" service name; locally use localhost
+API_HOST = os.getenv("API_HOST", "localhost")
+API_PORT = os.getenv("API_PORT", "8000")
+API_URL = f"http://{API_HOST}:{API_PORT}/score"
 
 # Create two columns for layout
 col1, col2 = st.columns([1, 1])

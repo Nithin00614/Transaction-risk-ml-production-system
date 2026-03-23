@@ -1,5 +1,6 @@
 import mlflow
 import mlflow.sklearn
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -12,6 +13,20 @@ from features import load_and_prepare_data
 
 def train():
     X, y = load_and_prepare_data("data/raw/transactions.csv")
+    
+    # Ensure feature names are set (required for sklearn compatibility)
+    FEATURE_NAMES = [
+        "amount",
+        "account_age_days",
+        "past_txn_count_24h",
+        "hour_of_day",
+        "merchant_risk_score"
+    ]
+    
+    if isinstance(X, pd.DataFrame):
+        X.columns = FEATURE_NAMES
+    else:
+        X = pd.DataFrame(X, columns=FEATURE_NAMES)
 
     X_train, X_val, y_train, y_val = train_test_split(
         X, y, test_size=0.2, random_state=42

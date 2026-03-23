@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # FastAPI inference service
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./models:/app/models:ro
+    networks:
+      - transaction-risk-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Streamlit UI service
+  ui:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.streamlit
+    ports:
+      - "8501:8501"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - API_HOST=api
+      - API_PORT=8000
+    volumes:
+      - ./models:/app/models:ro
+    networks:
+      - transaction-risk-net
+    depends_on:
+      - api
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+networks:
+  transaction-risk-net:
+    driver: bridge
