@@ -80,6 +80,18 @@ API:
 ```
 http://127.0.0.1:8000/docs
 ```
+---
+## 🌐 Live API
+
+The model is deployed and accessible via a public API.
+
+**Base URL:**
+https://transaction-risk-ml-production-system.onrender.com
+
+**Interactive Docs (Swagger UI):**
+https://transaction-risk-ml-production-system.onrender.com/docs
+
+You can test the API directly from the Swagger interface without any setup.
 
 ---
 
