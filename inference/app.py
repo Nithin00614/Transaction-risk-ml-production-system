@@ -40,9 +40,9 @@ def get_metadata():
             "merchant_risk_score"
         ],
         "decision_thresholds": {
-            "allow": "< 0.3",
-            "challenge": "0.3 - 0.7",
-            "block": "> 0.7"
+            "allow": "< 0.25",
+            "challenge": "0.25 - 0.6",
+            "block": "> 0.6"
         },
         "last_updated": "2026-02-08"
     }
@@ -69,9 +69,9 @@ def score_transaction(req: TransactionRequest):
         risk_score = model.predict_proba(features)[0][1]
 
     # Convert probability to business decision using thresholds
-    if risk_score < 0.3:
+    if risk_score < 0.25:
         decision = "allow"
-    elif risk_score < 0.7:
+    elif risk_score < 0.6:
         decision = "challenge"
     else:
         decision = "block"

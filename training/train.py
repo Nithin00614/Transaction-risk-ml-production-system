@@ -6,6 +6,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score
+from sklearn.calibration import CalibratedClassifierCV
 import joblib
 
 from features import load_and_prepare_data
@@ -32,10 +33,12 @@ def train():
         X, y, test_size=0.2, random_state=42
     )
 
-    model = Pipeline([
+    base_model = Pipeline([
     ("scaler", StandardScaler()),
-    ("clf", LogisticRegression(max_iter=1000))
+    ("clf", LogisticRegression(max_iter=1000, random_state=42))
     ])
+
+    model = CalibratedClassifierCV(base_model, method="sigmoid", cv=3)
 
     with mlflow.start_run():
         model.fit(X_train, y_train)

@@ -78,13 +78,14 @@ training-serving skew and accidental coupling.
 
 The model outputs a probability score using Logistic Regression.
 
-Based on this score, business decisions are applied:
+To convert probability into actionable decisions, thresholding is applied:
 
-- **risk_score < 0.3 → allow**
-- **0.3 ≤ risk_score < 0.7 → challenge**
-- **risk_score ≥ 0.7 → block**
+- **risk_score < 0.25 → allow**
+- **0.3 ≤ risk_score < 0.6 → challenge**
+- **risk_score ≥ 0.6 → block**
 
-This threshold-based decisioning simulates real-world fraud detection systems where model outputs are mapped to actionable outcomes.
+These thresholds are configurable and can be tuned based on business requirements such as fraud tolerance, false positives, and customer experience.
+
 ---
 
 ## 9. API Design

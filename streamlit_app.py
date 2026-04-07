@@ -11,7 +11,7 @@ st.markdown("Evaluate transaction risk in real-time using machine learning")
 # API endpoint configuration - supports both local and Docker environments
 # In Docker compose, use "api" service name; locally use localhost
 API_HOST = os.getenv("API_HOST", "localhost")
-API_PORT = os.getenv("API_PORT", "8000")
+API_PORT = os.getenv("API_PORT", "10000")
 API_URL = f"http://{API_HOST}:{API_PORT}/score"
 
 # Create two columns for layout
@@ -107,10 +107,10 @@ with col2:
                     st.error(f"**Decision: {decision.upper()}** ❌")
             
             # Risk Category
-            if risk_score < 0.3:
+            if risk_score < 0.25:
                 risk_category = "Low Risk"
                 color = "🟢"
-            elif risk_score < 0.7:
+            elif risk_score < 0.6:
                 risk_category = "Medium Risk"
                 color = "🟡"
             else:
@@ -130,9 +130,9 @@ with col2:
 # Display scoring rules
 with st.expander("📚 Scoring Rules"):
     st.markdown("""
-    - **Allow** (Risk Score < 30%): Transaction is approved automatically
-    - **Challenge** (Risk Score 30-70%): Additional verification may be required
-    - **Block** (Risk Score > 70%): Transaction is blocked for security
+    - **Allow** (Risk Score < 25%): Transaction is approved automatically
+    - **Challenge** (Risk Score 25-60%): Additional verification may be required
+    - **Block** (Risk Score > 60%): Transaction is blocked for security
     """)
 
 # Footer

@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     ports:
-      - "8000:8000"
+      - "10000:10000"
     environment:
       - PYTHONUNBUFFERED=1
     volumes:
@@ -15,7 +15,7 @@ services:
     networks:
       - transaction-risk-net
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:10000/health"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -30,7 +30,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - API_HOST=api
-      - API_PORT=8000
+      - API_PORT=10000
     volumes:
       - ./models:/app/models:ro
     networks:
