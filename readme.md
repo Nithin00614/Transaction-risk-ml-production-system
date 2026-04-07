@@ -81,6 +81,6 @@ docker run -p 8000:8000 <username>/transaction-risk-ml
 Detailed system architecture, design decisions, and trade-offs are available in:
 
 **Detailed System Design**  
-  → [Open](System_design.md)
+  → [Open](system_design.md)
 
 ---
