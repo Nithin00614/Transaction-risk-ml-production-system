@@ -10,10 +10,9 @@ st.markdown("Evaluate transaction risk in real-time using machine learning")
 
 # API endpoint configuration - supports both local and Docker environments
 # In Docker compose, use "api" service name; locally use localhost
-API_HOST = os.getenv("API_HOST", "localhost")
-API_PORT = os.getenv("API_PORT", "10000")
-API_URL = f"http://{API_HOST}:{API_PORT}/score"
-
+#API_HOST = os.getenv("API_HOST", "localhost")
+#API_PORT = os.getenv("API_PORT", "10000")
+API_URL = "https://transaction-risk-ml-production-system.onrender.com/score"
 # Create two columns for layout
 col1, col2 = st.columns([1, 1])
 
